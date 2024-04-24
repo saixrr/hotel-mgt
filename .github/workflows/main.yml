@@ -1,18 +1,75 @@
-name: Unit Tests
+# name: Unit Tests
 
+# on:
+#   push:
+#     branches:
+#       - master
+#   pull_request:
+#     branches: [master]
+
+# jobs:
+#   Jest:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v1
+#       - name: Run Tests
+#         run: |
+#           npm install 
+#           npm test
+
+name: unit tests
 on:
-  push:
+push:
     branches:
       - master
   pull_request:
     branches: [master]
 
+env:
+  PG_DATABASE: wd-projectk-test
+  PG_USER: postgres
+  PG_PASSWORD: rishidb
 jobs:
-  Jest:
+  
+  run-tests:
+    
     runs-on: ubuntu-latest
+
+    services:
+=      postgres:
+        image: postgres:11.7
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: rishidb
+          POSTGRES_DB: wd-projectk-test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
     steps:
-      - uses: actions/checkout@v1
-      - name: Run Tests
-        run: |
-          npm install 
-          npm test
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run:  npm ci
+
+      - name: Run unit tests
+        run: npm test
+      # - name: Run the app
+      #   id: run-app
+      #   run: |
+      #     npm install
+      #     npx sequelize-cli db:drop
+      #     npx sequelize-cli db:create
+      #     npx sequelize-cli db:migrate
+      #     PORT=3000 npm start &
+      #     sleep 5
+
+      # - name: Run integration tests
+      #   run: |
+      #     npm install cypress cypress-json-results
+      #     npx cypress run --env ROOT_URL="http://localhost:3000/"
