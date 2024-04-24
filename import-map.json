@@ -1,0 +1,5 @@
+{
+    "imports": {
+      "lodash": "https://cdn.skypack.dev/lodash@4.17.21"
+    }
+  }
