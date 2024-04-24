@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roo Details</title>
+    <title>Room Details</title>
     <meta name="csrf-token" content="<%= csrfToken %>" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -35,7 +35,7 @@
                 <p class="text-gray-700">Price: Rs:<%= room.price %>
                 </p>
                 <form action="/hrooms?hid=<%=room.hid %>&roomid=<%=room.id%>" method="post"
-                    onsubmit="checkBedsRequired(event, <%= availableBeds %>);">
+                    onsubmit="checkBedsRequired(event, <%= availableBeds %>)">
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <div class="mb-4">
                         <label for="from" class="block text-gray-700 text-sm font-bold mb-2">From:</label>
