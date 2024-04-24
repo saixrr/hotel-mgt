@@ -1,0 +1,49 @@
+<!-- createRoom.ejs -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Room</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="<%=csrfToken%>" />
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-200 p-8">
+    <div class="max-w-md mx-auto bg-white rounded p-8">
+        <h1 class="text-3xl font-bold mb-8">Create Room</h1>
+
+        <form class="space-y-4" method="POST" action="/insert-room?hid=<%=h_id%>">
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+            <div>
+                <label for="roomNumber" class="block font-bold mb-1">Room Number:</label>
+                <input type="text" id="roomNumber" name="roomNumber" class="w-full p-2 border border-gray-300 rounded"
+                    required>
+            </div>
+
+            <div>
+                <label for="availableBeds" class="block font-bold mb-1">Available Beds:</label>
+                <input type="number" id="availableBeds" name="availableBeds"
+                    class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+
+            <div>
+                <label for="membersList" class="block font-bold mb-1">Members List (separated by commas):</label>
+                <input type="text" id="membersList" name="membersList" class="w-full p-2 border border-gray-300 rounded"
+                    required>
+            </div>
+
+            <div>
+                <label for="pricePerBed" class="block font-bold mb-1">Price per Bed:</label>
+                <input type="number" id="pricePerBed" name="pricePerBed"
+                    class="w-full p-2 border border-gray-300 rounded" required>
+            </div>
+
+            <button type="submit" class="bg-green-600 text-white rounded py-2 px-4">Create Room</button>
+        </form>
+    </div>
+</body>
+
+</html>

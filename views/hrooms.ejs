@@ -1,0 +1,71 @@
+<!-- hrooms.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Details</title>
+    <meta name="csrf-token" content="<%= csrfToken %>" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        function checkBedsRequired(event, availableBeds) {
+            var bedsInput = event.target;
+            var bedsRequired = parseInt(bedsInput.value);
+            if (bedsRequired > availableBeds) {
+                event.preventDefault();
+                alert("Only " + availableBeds + " beds are available for this room.");
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-2xl mb-4">Room Details</h1>
+        <% rooms.forEach(function(room) { var availableBeds=room.tslots - room.membersList.split(',').length; if
+            (availableBeds> 0) { %>
+            <div class="bg-white rounded-lg shadow-md p-6 mb-4">
+                <h2 class="text-lg font-bold mb-2">Room Number: <%= room.rid %>
+                </h2>
+                <p class="text-gray-700">Total Beds: <%= room.tslots %>
+                </p>
+                <p class="text-gray-700">Available Beds: <%= availableBeds %>
+                </p>
+                <p class="text-gray-700">Price: Rs:<%= room.price %>
+                </p>
+                <form action="/hrooms?hid=<%=room.hid %>&roomid=<%=room.id%>" method="post"
+                    onsubmit="checkBedsRequired(event, <%= availableBeds %>);">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <div class="mb-4">
+                        <label for="from" class="block text-gray-700 text-sm font-bold mb-2">From:</label>
+                        <input id="from" name="fromdate" type="date"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-400"
+                            required min="<%= (new Date()).toISOString().split('T')[0] %>">
+                    </div>
+                    <div class="mb-4">
+                        <label for="to" class="block text-gray-700 text-sm font-bold mb-2">To:</label>
+                        <input id="to" name="todate" type="date"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-400"
+                            required min="<%= (new Date(Date.now() + 86400000)).toISOString().split('T')[0] %>">
+                    </div>
+                    <div class="mb-4">
+                        <label for="beds" class="block text-gray-700 text-sm font-bold mb-2">Number of Beds
+                            Required:(only one bed can be reserved at once)</label>
+                        <input id="beds" name="beds" type="number"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-blue-400"
+                            min="1" max="<%= availableBeds %>" required>
+                    </div>
+                    <input type="hidden" name="roomId" value="<%= room.id %>">
+                    <button
+                        class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full focus:outline-none focus:ring focus:ring-blue-400 mt-4"
+                        type="submit">
+                        Reserve
+                    </button>
+                </form>
+            </div>
+            <% } }) %>
+    </div>
+</body>
+
+</html>

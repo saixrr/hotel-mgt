@@ -1,0 +1,112 @@
+<!-- userProperties.ejs -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Properties</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Add your custom styles here */
+
+        /* Remove the existing styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            color: #333;
+            margin: 0;
+            margin-bottom: 5px;
+        }
+
+        p {
+            margin: 0;
+            margin-bottom: 5px;
+        }
+
+        a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #666;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .create-link {
+            display: block;
+            margin-top: 20px;
+        }
+
+        .insert-room-link {
+            color: #fff;
+            background-color: #28a745;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-3xl font-bold mb-8">User Properties</h1>
+
+        <% if (properties.length> 0) { %>
+            <ul>
+                <% properties.forEach((property)=> { %>
+                    <li class="bg-white border border-gray-300 p-4 mb-4">
+                        <h2 class="text-xl font-bold mb-2">
+                            <%= property.hname %>
+                                <a href="/insert-room?hid=<%=property.id%>" class="insert-room-link">Insert Room</a>
+                        </h2>
+                        <p class="mb-2"><strong>Address:</strong>
+                            <%= property.address %>
+                        </p>
+                        <p class="mb-2"><strong>Amenities:</strong>
+                            <%= property.amenities %>
+                        </p>
+                        <p class="mb-2"><strong>City:</strong>
+                            <%= property.city %>
+                        </p>
+                        <p class="mb-2"><strong>State:</strong>
+                            <%= property.state %>
+                        </p>
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } else { %>
+                <p>No properties found.</p>
+                <% } %>
+
+                    <a href="/newproperty" class="create-link text-blue-500">Create New Property</a>
+    </div>
+</body>
+
+</html>

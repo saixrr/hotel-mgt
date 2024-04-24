@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Hotel Reservation Confirmation</title>
+    <!-- Include the jsPDF library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Add your custom navbar styles here */
+        nav {
+            background-color: #333;
+            padding: 10px;
+            color: #fff;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="/muser">Home</a>
+        <a href="/mybookings">My Bookings</a>
+        <a href="/signout">Sign Out</a>
+    </nav>
+
+    <% reservationData.forEach((reservation, index)=> { %>
+        <h1 class="text-3xl font-bold mb-4">Hotel Reservation Confirmation - <%= index + 1 %>
+        </h1>
+
+        <button id="saveBtn<%= index %>" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Save PDF
+        </button>
+
+        <script>
+            document.getElementById("saveBtn<%= index %>").addEventListener("click", function () {
+                var doc = new jsPDF();
+
+                doc.setFontSize(18);
+                doc.setFontStyle("bold");
+
+                doc.text("Hotel Room Reservation Confirmation - <%= index + 1 %>", 20, 20);
+
+                doc.setFontSize(12);
+                doc.setFontStyle("normal");
+
+                doc.text("Hotel Name: <%= reservation.hotelName %>", 20, 40);
+                doc.text("Receipt ID: <%= reservation.receiptId %>", 20, 50);
+                doc.text("Check-in Date: <%= reservation.checkInDate %>", 20, 60);
+                doc.text("Check-out Date: <%= reservation.checkOutDate %>", 20, 70);
+                doc.text("Guest Name: <%= reservation.guestName %>", 20, 80);
+                doc.text("Total Price: <%= reservation.totalPrice %>", 20, 90);
+
+                doc.save("reservation_confirmation<%= index + 1 %>.pdf");
+            });
+        </script>
+        <% }); %>
+</body>
+
+</html>
