@@ -152,7 +152,7 @@ app.post(
 );
 app.get("/test",async (req,res)=>{
   res.send({id:1,name:res.__('Sign up')});
-});
+})
 app.get("/admin", async (req, res) => {
   res.render("admin.ejs");
 });
