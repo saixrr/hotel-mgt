@@ -5,6 +5,7 @@
 /* eslint-disable key-spacing */
 /* eslint-disable quotes */
 const flash = require("connect-flash");
+const {I18n}=require('i18n');
 const csrf = require("tiny-csrf");
 const { request } = require("http");
 const express = require("express");
@@ -51,6 +52,16 @@ app.use(function (request, response, next) {
   response.locals.messages = request.flash();
   next();
 });
+const i18n = new I18n({
+  locales:['en','es'],
+  directory:path.join(__dirname,'locale'),
+  defaultLocale:'en'
+})
+app.use(i18n.init);
+// app.use(functon(req,res,next){
+//   i18n.setLocale(req,req.headers['abcd']);
+//   next();
+// })
 const { v4: uuidv4 } = require("uuid");
 const getUserIdMiddleware = (req, res, next) => {
   if (req.user) {
@@ -139,7 +150,9 @@ app.post(
     }
   }
 );
-
+app.get("/test",async (req,res)=>{
+  res.send({id:1,name:res.__('Sign up')});
+});
 app.get("/admin", async (req, res) => {
   res.render("admin.ejs");
 });
